@@ -1,4 +1,4 @@
-export class LinkedList {
+class LinkedList {
     constructor(head = null) {
         this.head = null;
         this.tail = null;
@@ -12,16 +12,8 @@ export class LinkedList {
             this.head = node;
             this.tail = this.head;
         } else {
-            let temp = this.head;
-            while (true) {
-                if (temp.nextNode === null) {
-                    temp.nextNode = node;
-                    break;
-                } else {
-                    temp = temp.nextNode;
-                }
-            }
-            this.tail = temp.nextNode;
+            this.tail.nextNode = node;
+            this.tail = this.tail.nextNode;
         }
     }
 
@@ -39,11 +31,16 @@ export class LinkedList {
     }
 
     size(node = this.head) {
-        if (node.nextNode === null) {
+        if (this.head === null)
+            return 0;
+
+
+        if (node?.nextNode === null) {
             return 1;
         }
 
-        return this.size(node.nextNode) + 1;
+
+        return this.size(node?.nextNode) + 1;
     }
 
     headNode() {
@@ -57,7 +54,6 @@ export class LinkedList {
     at(index) {
         let temp = this.head;
         let counter = 0;
-
         while (counter !== index) {
             counter += 1;
             temp = temp.nextNode;
@@ -93,10 +89,12 @@ export class LinkedList {
 
     find(value) {
         let temp = this.head;
+        let counter = 0;
         while (temp !== null) {
-            if (temp.value === value)
-                return value;
+            if (temp.value[0] === value)
+                return [temp.value[1], counter];
             temp = temp.nextNode;
+            counter += 1;
         }
 
         return null;
@@ -113,12 +111,73 @@ export class LinkedList {
 
         return linkedList + '(null)';
     }
+
+    insertAt(value, index) {
+        const size = this.size();
+        if (index > size) {
+            throw new Error("Index is larger than the size of linked list.");
+        }
+
+        const node = new Node();
+        node.value = value;
+
+        if (index === size && index !== 0) {
+            this.tail.nextNode = node;
+            this.tail = this.tail.nextNode;
+            return;
+        } else if (index === 0) {
+            this.prepend(node.value);
+            let tail = this.tailNode();
+            tail = this.head;
+            return;
+        }
+
+        let currentNode = this.at(index);
+
+        let prevNode = this.at(index !== 0 ? index - 1 : index);
+        const nextNode = this.at(index + 1);
+
+        currentNode = node;
+        // If write this because when index is equal to zero,
+        // we can not take previous node in Linked List
+        (index === 0) ? this.head = currentNode : prevNode.nextNode = currentNode;
+        currentNode.nextNode = nextNode;
+
+        if (index === size - 1) {
+            this.tail = prevNode.nextNode;
+        }
+    }
+
+    removeAt(index) {
+        const size = this.size();
+        if (index >= size) {
+            throw new Error("Index is larger or equal than the size of linked list.");
+        }
+
+        let currentNode = this.at(index);
+        currentNode = currentNode.nextNode;
+
+        if (index > 0) {
+            const prevNode = this.at(index - 1);
+            prevNode.nextNode = currentNode;
+        } else {
+            this.head = null;
+            this.tail = null;
+        }
+
+        if (index === size - 1 && index > 0) {
+            this.tail = prevNode;
+        }
+
+        return;
+    }
 }
 
-export class Node {
+class Node {
     constructor(value = null, nextNode = null) {
         this.value = value;
         this.nextNode = nextNode;
     }
 }
 
+export { LinkedList, Node }

@@ -1,62 +1,4 @@
-import { LinkedList, Node } from "./linkedLists.js";
-
-class HashMap {
-    #buckets;
-    #capacity;
-    #loadFactor;
-
-    constructor() {
-        this.#buckets = [];
-        this.#capacity = 16;
-        this.#loadFactor = 0.8;
-    }
-
-    hash(key) {
-        let hashCode = 0;
-
-        const primeNumber = 31;
-
-        for (let i = 0; i < key.length; i++) {
-            hashCode = (hashCode * primeNumber + key.charCodeAt(i)) % this.#capacity;
-        }
-
-        return hashCode;
-    }
-
-    set(key, value) {
-        const hashCode = this.hash(key);
-        if (!this.#buckets[hashCode]) {
-            this.#buckets[hashCode] = new LinkedList();
-        }
-
-        (this.#buckets[hashCode]).append(value);
-    }
-
-    get(key) {
-        const hashCode = this.hash(key);
-        const node = (this.#buckets)[hashCode];
-
-        return node.toString();
-    }
-
-    has(key) {
-    }
-
-    remove(key) {
-    }
-
-    length() {
-
-    }
-
-    clear() { }
-
-    keys() { }
-
-    values() { }
-
-    entries() { }
-}
+import { HashMap } from "./hashMap.js";
 
 let test = new HashMap();
 
@@ -72,3 +14,18 @@ test.set('ice cream', 'white')
 test.set('jacket', 'blue')
 test.set('kite', 'pink')
 test.set('lion', 'golden')
+test.set('moon', 'silver')
+
+console.log(test.get('apple'));
+console.log(test.get('banana'));
+console.log(test.get('carrot'));
+console.log(test.get('dog'));
+console.log(test.get('elephant'));
+console.log(test.get('frog'));
+console.log(test.get('grape'));
+console.log(test.get('hat'));
+console.log(test.get('ice cream'));
+console.log(test.get('jacket'));
+console.log(test.get('kite'));
+console.log(test.get('lion'));
+console.log(test.get('moon'));
