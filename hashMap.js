@@ -37,10 +37,9 @@ class HashMap {
             return;
         }
 
-        // That's if loadFactor * capacity < HashMap Entries
-
         (this.#buckets[hashCode]).prepend([key, value]);
 
+        // That's if loadFactor * capacity < HashMap Entries
         if (Math.round(this.#capacity * this.#loadFactor) === this.length()) {
             this.#capacity = this.#capacity * 2;
             // Rehashing
